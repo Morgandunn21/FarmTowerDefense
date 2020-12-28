@@ -2,33 +2,47 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inventory : MonoBehaviour
+public class Inventory
 {
-    public uint numItems;
+    private uint numItems;
 
     private Item[] items;
     private uint[] itemCounts;
 
     private InventoryUI inventoryUI;
+    private int activeItem = 0;
+    private Player player;
 
-    private void Awake()
+    public Inventory(uint ni, Player p)
     {
-        
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
+        numItems = ni;
+        player = p;
         inventoryUI = GameManager.instance.inventoryUI;
         inventoryUI.InitInventory(numItems);
         items = new Item[numItems];
         itemCounts = new uint[numItems];
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ChangeActive(float mouseScroll)
     {
-        
+        if (mouseScroll > 0)
+        {
+            if (activeItem < numItems - 1)
+            {
+                activeItem++;
+                inventoryUI.SetActiveItem(activeItem);
+                player.SetHeldItem(items[activeItem]?.itemImage);
+            }
+        }
+        else if (mouseScroll < 0)
+        {
+            if (activeItem > 0)
+            {
+                activeItem--;
+                inventoryUI.SetActiveItem(activeItem);
+                player.SetHeldItem(items[activeItem]?.itemImage);
+            }
+        }
     }
 
     /// <summary>
@@ -77,6 +91,12 @@ public class Inventory : MonoBehaviour
         if(success == false && emptyIndex >= 0)
         {
             items[emptyIndex] = c;
+
+            if(emptyIndex == activeItem)
+            {
+                player.SetHeldItem(c.itemImage);
+            }
+
             inventoryUI.SetItem(emptyIndex, c.itemImage);
 
             if(c.consumable)
@@ -95,8 +115,13 @@ public class Inventory : MonoBehaviour
         return success;
     }
 
-    public void UseItem(uint index)
+    public void UseItem(int index = -1)
     {
+        if(index == -1)
+        {
+            index = activeItem;
+        }
+
         Item item = items[index];
 
         if(item != null)
@@ -105,7 +130,19 @@ public class Inventory : MonoBehaviour
 
             if(item.consumable)
             {
-                itemCounts[index]--;
+                uint count = --itemCounts[index];
+
+                if(count == 0)
+                {
+                    inventoryUI.SetItem(index, null);
+                    inventoryUI.SetCount(index, "");
+                    player.SetHeldItem(null);
+                    items[index] = null;
+                }
+                else
+                {
+                    inventoryUI.SetCount(index, count.ToString());
+                }
             }
         }
     }

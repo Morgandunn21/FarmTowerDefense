@@ -12,6 +12,6 @@ public class Item : ScriptableObject
 
     public virtual void UseItem()
     {
-
+        Debug.Log($"Using {this.name}\nConsumed: {consumable}");
     }
 }
