@@ -1,0 +1,7 @@
+Farming Tower Defense Game:
+-Free Movement
+-Tilebased Planting/Building
+-Plant seeds to grow crops
+-Crops turn into towers to defend at night
+-Enemies Come at night to attack the farm
+-Enemies drop various items that can be used or sold
