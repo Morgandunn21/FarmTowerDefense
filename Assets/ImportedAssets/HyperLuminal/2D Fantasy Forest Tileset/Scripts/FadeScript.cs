@@ -69,7 +69,7 @@ public class FadeScript : MonoBehaviour
 			{
 				AlphaValue = 1.0f;
 				FadeType = FADETYPE.IN;
-				GameObject.Find("PlayerCharacter").GetComponent<PlayerMovement>().Respawn();
+				//GameObject.Find("PlayerCharacter").GetComponent<PlayerMovement>().Respawn();
 			}
 		}
 

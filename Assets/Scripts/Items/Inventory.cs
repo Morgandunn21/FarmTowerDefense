@@ -9,9 +9,18 @@ public class Inventory : MonoBehaviour
     private Item[] items;
     private uint[] itemCounts;
 
+    private InventoryUI inventoryUI;
+
+    private void Awake()
+    {
+        
+    }
+
     // Start is called before the first frame update
     void Start()
     {
+        inventoryUI = GameManager.instance.inventoryUI;
+        inventoryUI.InitInventory(numItems);
         items = new Item[numItems];
         itemCounts = new uint[numItems];
     }
@@ -30,6 +39,7 @@ public class Inventory : MonoBehaviour
     public bool PickupItem(Item c)
     {
         bool success = false;
+        bool itemFound = false;
         int emptyIndex = -1;
 
         for(int i = 0; i < items.Length; i++)
@@ -39,20 +49,47 @@ public class Inventory : MonoBehaviour
                 if(emptyIndex < 0)
                 {
                     emptyIndex = i;
+
+                    if(itemFound)
+                    {
+                        break;
+                    }
                 }
             }
-            else if(c.itemID == items[i].itemID)
+            else if(!itemFound && c.itemID == items[i].itemID)
             {
-                success = true;
-                itemCounts[i]++;
-                break;
+                itemFound = true;
+
+                if(c.consumable)
+                {
+                    success = true;
+                    itemCounts[i]++;
+                    inventoryUI.SetCount(i, itemCounts[i].ToString());
+                    break;
+                }
+                else if(emptyIndex >= 0)
+                {
+                    break;
+                }
             }
         }
 
         if(success == false && emptyIndex >= 0)
         {
             items[emptyIndex] = c;
-            itemCounts[emptyIndex] = 1;
+            inventoryUI.SetItem(emptyIndex, c.itemImage);
+
+            if(c.consumable)
+            {
+                itemCounts[emptyIndex] = 1;
+                inventoryUI.SetCount(emptyIndex, "1");
+            }
+            else
+            {
+                inventoryUI.SetCount(emptyIndex, "");
+            }
+
+            success = true;
         }
 
         return success;
