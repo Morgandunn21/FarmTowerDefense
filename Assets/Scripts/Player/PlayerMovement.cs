@@ -43,18 +43,6 @@ public class PlayerMovement : MonoBehaviour
 		MovePlayer();
     }
 
-    void OnTriggerEnter2D(Collider2D collider)
-	{
-		
-	}
-
-	/// <summary>
-	/// Respawns the player at checkpoint.
-	/// </summary>
-	public void Respawn()
-	{
-	}
-
 	private void GetInput()
     {
 		// check for player exiting the game
