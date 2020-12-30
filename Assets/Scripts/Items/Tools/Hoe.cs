@@ -1,18 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
-public class Hoe : MonoBehaviour
+[CreateAssetMenu(menuName = "Scriptable Objects/Tools/Hoe", order = 1)]
+public class Hoe : Item
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public GameobjectTile dirtTile;
 
-    // Update is called once per frame
-    void Update()
+    public override bool UseItem(Vector3Int targetTile)
     {
-        
+        base.UseItem(targetTile);
+
+        groundMap.SetTile(targetTile, dirtTile);
+
+        return true;
     }
 }
