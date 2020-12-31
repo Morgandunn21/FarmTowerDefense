@@ -48,6 +48,11 @@ public class Player : MonoBehaviour
         GetInventoryInput();
         //Get the current square highlighted by the player
         FindHighlightedSquare();
+
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            ScreenCapture.CaptureScreenshot("Farm TD Screenshot");
+        }
     }
 
     /// <summary>
