@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b641b64757590e34e893fe6746140650, type: 3}
-  m_Name: Test Seed
+  m_Name: Test Seed-LongGrowth
   m_EditorClassIdentifier: 
-  itemID: 3
+  itemID: 4
   consumable: 1
-  itemImage: {fileID: 21300000, guid: 3644f74ce064b6445bcbd65ba31ddf35, type: 3}
-  plantPrefab: {fileID: 1972440716710916308, guid: bac42a8d880f6314d93597c6ae320a9e, type: 3}
+  itemImage: {fileID: 21300000, guid: 68f03904aa02ba244a61e03fee3f6293, type: 3}
+  plantPrefab: {fileID: 1972440716710916308, guid: b3902574c16654346895bfe0960a740f, type: 3}

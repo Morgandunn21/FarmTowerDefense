@@ -7,16 +7,24 @@ using UnityEngine.Tilemaps;
 public class Seed : Item
 {
     //Tile containing the pplant prefab for this seed
-    public GameobjectTile plantPrefabTile;
+    public GameObject plantPrefab;
     //Tilemap that plants are placed on
     protected Tilemap plantMap;
+
+    //local plant prefab tile
+    private GameobjectTile plantPrefabTile;
 
     //Inits the plant tilemap
     public override void InitItem()
     {
         base.InitItem();
 
+        //Create a Game Object Tile to place on use
         plantMap = GameManager.instance.plantMap;
+        plantPrefabTile = CreateInstance<GameobjectTile>();
+        plantPrefabTile.tilePrefab = plantPrefab;
+
+        itemImage = plantPrefab.GetComponent<Plant>().seedSprite;
     }
 
     //Called when the item is used

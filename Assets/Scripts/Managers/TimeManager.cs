@@ -5,6 +5,7 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 public class TimeManager : MonoBehaviour
 {
+    #region Member Variables
     [Header("Day Length Properties")]
     /// <summary>
     /// How many seconds the entire day lasts
@@ -53,21 +54,24 @@ public class TimeManager : MonoBehaviour
     //the color the sun changes to throughout the day
     private Gradient sunColor;
     private bool sunUpdateFlag;
+    #endregion
+
+    //Delegate for the hour change event
+    public delegate void HourChangeEvent(bool daytime);
+    //event called using the above delegate
+    public static event HourChangeEvent OnHourChange;
 
     // Start is called before the first frame update
     void Awake()
     {
+        //initialize private variables
         lengthOfHour = lengthOfDay / 24;
         currentHour = (int)dawnStart;
         currentTime = 0;
         daytime = true;
         sunUpdateFlag = true;
+        //create the sun color gradient
         InitSunColors();
-        Debug.Log($"Length of Day: {lengthOfDay}");
-        Debug.Log($"Length of Hour: {lengthOfHour}");
-        Debug.Log($"Current Hour: {currentHour}");
-        Debug.Log($"Current Time: {currentTime}");
-        Debug.Log($"-------------------------------");
     }
 
     // Update is called once per frame
@@ -100,7 +104,10 @@ public class TimeManager : MonoBehaviour
 
             //reset current time to 0
             currentTime = 0;
+            //update the sun to the start of the hour
             UpdateSun(0);
+            //Send the hour changed event
+            HourChangedHandler();
             //reset the update flag to true
             sunUpdateFlag = true;
         }
@@ -142,12 +149,18 @@ public class TimeManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Change the color of the sun light based on the current quarter hour
+    /// </summary>
+    /// <param name="quarterHour"></param>
     private void UpdateSun(int quarterHour)
     {
-        Debug.Log($"Update Sun: {((float)currentHour + (quarterHour / 4f)) / 24}");
         sunLight.color = sunColor.Evaluate(((float)currentHour + (quarterHour / 4f)) / 24);
     }
 
+    /// <summary>
+    /// Create and calculate the gradient for the sun's colors
+    /// </summary>
     private void InitSunColors()
     {
         sunColor = new Gradient();
@@ -174,8 +187,22 @@ public class TimeManager : MonoBehaviour
         UpdateSun(0);
     }
 
+    /// <summary>
+    /// Creates a new GRadient Key with the given color and time (just to improve readability)
+    /// </summary>
+    /// <param name="color"></param>
+    /// <param name="time"></param>
+    /// <returns></returns>
     private GradientColorKey colorKey(Color color, float time)
     {
         return new GradientColorKey(color, time);
+    }
+
+    /// <summary>
+    /// Used to call the OnHourChange event
+    /// </summary>
+    private void HourChangedHandler()
+    {
+        OnHourChange?.Invoke(daytime);
     }
 }

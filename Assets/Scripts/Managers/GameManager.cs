@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public InventoryUI inventoryUI;
     public Tilemap groundMap;
     public Tilemap plantMap;
+    public Transform[] initialEnemyTargets;
 
     private void Awake()
     {
