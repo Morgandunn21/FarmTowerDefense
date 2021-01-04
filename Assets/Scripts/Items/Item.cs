@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Tilemaps;
 
 [CreateAssetMenu(menuName = "Scriptable Objects/Item", order = 1)]
 public class Item : ScriptableObject
@@ -10,8 +10,16 @@ public class Item : ScriptableObject
     public bool consumable;
     public Sprite itemImage;
 
-    public virtual void UseItem()
+    protected Tilemap groundMap;
+    public virtual bool UseItem(Vector3Int targetTile)
     {
         Debug.Log($"Using {this.name}\nConsumed: {consumable}");
+
+        return true;
+    }
+
+    public virtual void InitItem()
+    {
+        groundMap = GameManager.instance.groundMap;
     }
 }

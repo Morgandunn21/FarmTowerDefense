@@ -109,6 +109,8 @@ public class Inventory
                 inventoryUI.SetCount(emptyIndex, "");
             }
 
+            c.InitItem();
+
             success = true;
         }
 
@@ -126,9 +128,9 @@ public class Inventory
 
         if(item != null)
         {
-            item.UseItem();
+            bool success = item.UseItem(player.GetHighightedSquare());
 
-            if(item.consumable)
+            if(item.consumable && success)
             {
                 uint count = --itemCounts[index];
 
